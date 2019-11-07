@@ -39,14 +39,12 @@ namespace ExcitingVirtualPet
             pet.SetState(pet.GetPlayState());
             if (pet.CurrentEnergy == 0)
             {
-                Console.WriteLine("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL");
                 pet.Sleep();
             }
         }
 
         public void Sleep()
         {
-            Console.WriteLine("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL");
             pet.SetState(pet.GetSleepState());
         }
 
