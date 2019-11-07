@@ -23,11 +23,11 @@ namespace ExcitingVirtualPet
                 {
                     Application.Run(new PetForm());
                 }
-
                 catch (Exception)
                 {
                     Application.Exit();
                 }
+
             }
         }
     }

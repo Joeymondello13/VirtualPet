@@ -25,6 +25,7 @@ namespace ExcitingVirtualPet
         int red;
         int green;
         int blue;
+        int timerCount;
 
         public PetForm()
         {
@@ -195,7 +196,9 @@ namespace ExcitingVirtualPet
             red = 0;
             green = 0;
             blue = 0;
+            timerCount = 0;
             sleepingLabel.Visible = true;
+            sleepingLabel.ForeColor = Color.White;
             DisableButtons();
             petPictureBox.Image = pet.currentImage;
         }
@@ -221,6 +224,7 @@ namespace ExcitingVirtualPet
         }
         private void PetisAwake()
         {
+            sleepingLabel.ForeColor = Color.Black;
             this.BackColor = Control.DefaultBackColor;
             petPictureBox.Image = pet.currentImage;
             pet.CurrentEnergy = energyBar.Maximum;
@@ -247,9 +251,14 @@ namespace ExcitingVirtualPet
             }
             if(pet.GetState() is SleepState)
             {
-                if (green < 255) green++;
-                if (red < 255) red++;
-                if (blue < 255) blue++;
+                timerCount++;
+                if(timerCount >= 3)
+                {
+                    if (green < 255) green++;
+                    if (red < 255) red++;
+                    if (blue < 255) blue++;
+                    timerCount = 0;
+                }
                 SleepColor = Color.FromArgb(red, green, blue);
                 this.BackColor = SleepColor;
             }
@@ -315,9 +324,16 @@ namespace ExcitingVirtualPet
                     petWaterButton.Text = "Give Bird Water";
                     feedPetButton.Text = "Feed Bird";
                 }
-                AttachPetEvents();
                 InitializeProgressBars();
                 pet.InitializeFrames();
+                boredomMeter.Maximum = pet.Max_Boredom;
+                hungerMeter.Maximum = pet.Max_Hunger;
+                thirstMeter.Maximum = pet.Max_Thirst;
+                affectionMeter.Maximum = pet.Max_Affection;
+                waterAmountBar.Maximum = pet.Max_Water;
+                foodAmountBar.Maximum = pet.Max_Food;
+                energyBar.Maximum = pet.Max_Energy;
+                AttachPetEvents();
                 petPictureBox.Image = pet.currentImage;
                 pet.CurrentFood = binaryReader.ReadInt32();
                 pet.PetAffection = binaryReader.ReadInt32();
@@ -326,13 +342,6 @@ namespace ExcitingVirtualPet
                 pet.PetHunger = binaryReader.ReadInt32();
                 pet.CurrentEnergy = binaryReader.ReadInt32();
                 pet.PetBoredom = binaryReader.ReadInt32();
-                boredomMeter.Maximum = pet.Max_Boredom;
-                hungerMeter.Maximum = pet.Max_Hunger;
-                thirstMeter.Maximum = pet.Max_Thirst;
-                affectionMeter.Maximum = pet.Max_Affection;
-                waterAmountBar.Maximum = pet.Max_Water;
-                foodAmountBar.Maximum = pet.Max_Food;
-                energyBar.Maximum = pet.Max_Energy;
                 pet.SetState(pet.GetAwakeState());
                 this.TopMost = true;
                 binaryReader.Dispose();
